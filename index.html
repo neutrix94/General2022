@@ -1,0 +1,131 @@
+<html>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/css/bootstrap.css">
+    <script type="text/javascript" src="https://superal.github.io/canvas2image/canvas2image.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <head>
+
+        <title></title>
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    </head>
+    <body>
+    <!--div id="videoContainer">
+        <video id="vid"></video>
+    </div>
+    <button type="button" onclick="open_camera();">Abrir camara</button>
+    <button type="button" onclick="takeScreen();">Tomar foto</button>
+        <div class="response"></div-->
+    <button class="btn btn-success form-control" onclick="location.href='index.php';">
+        <i class="icon-ok-circled">Ir al sistema</i>
+    </button>
+    <br>
+    <div id="video_container">
+        <video id="video"></video>
+        <img src="img/frames/largo_por_alto-removebg-preview.png" id="frame" width="100%"><!--  -->
+    </div>
+    <br>
+    <div id="options_buttons">
+        <button type="button" onclick="open_camera()" class="btn btn-info">
+            <i class="icon-instagram" id="camera_btn">Abrir Camara</i>
+        </button>
+        <button type="button" onclick="takeScreen()" class="btn btn-success">
+            <i class="icon-picture-outline">Tomar foto</i>
+        </button>
+        <p id="estado">
+        </p>
+        <div class="row">
+            <div class="col-4">
+                <img src="img/frames/camera_icon.jpeg" id="img_1" width="100%">
+            </div>
+            <div class="col-4">
+                <img src="img/frames/camera_icon.jpeg" id="img_2" width="100%">
+            </div>
+            <div class="col-4">
+                <img src="img/frames/camera_icon.jpeg" id="img_3" width="100%">
+            </div>
+        </div>
+        <canvas id="canvas" style="display: none;"></canvas>
+</div>
+<div class="response"></div>
+    </body>
+    </html>    
+
+<script type="text/javascript">
+        video = document.getElementById('video');
+        canvas_tmp = document.getElementById('canvas');
+    function open_camera() {
+        $( '#frame' ).css( 'display', 'block' )
+        video.style.width = document.width + 'px';
+        video.style.height = document.height + 'px';
+        video.setAttribute('autoplay', '');
+        video.setAttribute('muted', '');
+        video.setAttribute('playsinline', '');
+        var constraints = {
+             audio: false,
+             video: {
+                 facingMode: 'environment'/*user*/
+             }
+        }
+        navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
+            video.srcObject = stream;
+        });
+    }
+
+    function takeScreen(  ){
+        html2canvas($('#video_container')[0]).then(function(canvas) {
+        //    $(".response").html(canvas);  
+            var contexto = canvas_tmp.getContext("2d");
+            canvas_tmp.width = video.videoWidth;
+            canvas_tmp.height = video.videoHeight;
+        //creación de imágen
+            contexto.drawImage(canvas, 0, 0, canvas_tmp.width, canvas_tmp.height);
+            var foto = canvas_tmp.toDataURL(); //Esta es la foto, en base 64
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "code/especiales/recepcionBodega/ajax/db.php?fl=savePhoto", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send(encodeURIComponent(foto)); //Codificar y enviar
+
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                    //alert( "La foto fue enviada correctamente" + xhr.responseText );
+                    console.log("La foto fue enviada correctamente" + xhr.responseText );
+                    console.log(xhr);
+                }
+            }
+        });
+    }
+
+
+</script>
+
+<style type="text/css">
+    
+    #video_container{
+        position: relative;
+        width: 100%;
+        left: 0%;
+       /* display: none;*/
+    }
+    #options_buttons{
+        position: relative;
+        top : 0;
+    }
+    #video{
+        position: relative;
+        width: 100%;
+        left: 0%;
+        z-index: 1;
+    } 
+    #frame{
+        position: relative;
+        margin-top: -87%;
+        left: 0%;
+        z-index: 2;
+        width: 100%;
+        display : none; 
+    }
+    #boton{
+        /*display: none;*/
+    }
+
+</style>

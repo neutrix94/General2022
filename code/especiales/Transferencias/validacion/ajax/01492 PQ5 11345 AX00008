@@ -1,0 +1,58 @@
+
+3EAEA3EA
+
+68 CJ12 11343 AX00009
+68 CJ12 11343 AX00010
+68 CJ12 11343 AX00011
+68 CJ12 11343 AX00012
+68 CJ12 11343 AX00013
+68 CJ12 11343 AX00014
+68 CJ12 11343 AX00015
+68 CJ12 11343 AX00016
+68 CJ12 11343 AX00017
+68 CJ12 11343 AX00018
+68 CJ12 11343 AX00019
+68 CJ12 11343 AX00020
+68 CJ12 11343 AX00021
+68 CJ12 11343 AX00022
+68 CJ12 11343 AX00023
+68 CJ12 11343 AX00024
+68 CJ12 11343 AX00025
+68 CJ12 11343 AX00026
+68 CJ12 11343 AX00027
+68 CJ12 11343 AX00028
+68 CJ12 11343 AX00029
+68 CJ12 11343 AX00030
+
+Serie LED 500 Luces Calida C/Transparente 25M
+Cascada Destellos V3 LED 480 Luces Blanca c/Verde6.5M
+Serie Minicanica V8 LED 500 Luces Color c/Verde 25M
+Cascada LED 500 Luces Blanca C/Transparente 10M
+Hojita Oro C21058	
+
+/*eliminar todo lo referente a transferencias*/
+DELETE FROM ec_transferencias_diferencias;
+DELETE FROM ec_bloques_transferencias_recepcion;
+DELETE FROM ec_bloques_transferencias_recepcion_detalle;
+DELETE FROM ec_bloques_transferencias_validacion;
+DELETE FROM ec_bloques_transferencias_validacion_detalle;
+DELETE FROM ec_transferencia_codigos_unicos;
+DELETE FROM ec_transferencias_recepcion_usuarios;
+DELETE FROM ec_transferencias_validacion_usuarios;
+DELETE FROM ec_transferencias_surtimiento_usuarios;
+DELETE FROM ec_transferencias_surtimiento_detalle;
+DELETE FROM ec_transferencias_surtimiento;
+DELETE FROM ec_transferencia_productos;
+DELETE FROM ec_transferencias WHERE id_transferencia > 0;
+
+/*resetear inventario*/
+DELETE  FROM ec_movimiento_detalle_proveedor_producto;
+DELETE FROM ec_movimiento_detalle;
+DELETE FROM ec_movimiento_almacen WHERE id_movimiento_almacen >0;
+UPDATE ec_almacen_producto set inventario = 0;
+UPDATE ec_inventario_proveedor_producto set inventario = 0;
+DELETE FROM Log_almacen_producto;
+
+
+
+
